@@ -1,0 +1,33 @@
+[workspace]
+members = [
+    ".",
+    "tools/vector2yaff",
+]
+
+[workspace.package]
+edition = "2024"
+
+[package]
+name = "libyaff"
+version = "0.1.1"
+edition.workspace = true
+description = "Yet Another Font Format (YAFF) - A compact bitmap font format with kerning support"
+license = "MIT OR Apache-2.0"
+repository = "https://github.com/mist64/libyaff"
+homepage = "https://github.com/mist64/libyaff"
+documentation = "https://docs.rs/libyaff"
+keywords = ["fonts", "bitmap", "graphics", "embedded"]
+categories = ["graphics", "embedded"]
+readme = "README.md"
+
+[features]
+default = ["parsing", "encoding"]
+parsing = ["regex"]
+encoding = []
+
+[dependencies]
+regex = { version = "1", default-features = false, optional = true }
+
+[[example]]
+name = "test"
+required-features = ["parsing"]

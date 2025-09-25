@@ -1,0 +1,14 @@
+[package]
+name = "vector2yaff"
+version = "0.1.0"
+edition = "2024"
+description = "Converts vector fonts (TTF, OTF, etc.) to YAFF format using FreeType"
+license = "MIT OR Apache-2.0"
+
+[[bin]]
+name = "vector2yaff"
+path = "src/main.rs"
+
+[dependencies]
+libyaff = { path = "../..", default-features = false, features = ["encoding"] }
+freetype-rs = "0.38.0"
