@@ -206,22 +206,23 @@ pub fn convert_font_to_yaff(
         // Check kerning between all pairs
         for &left_char in &char_codes {
             for &right_char in &char_codes {
-                if let Some(left_index) = face.get_char_index(left_char as usize)
-                    && let Some(right_index) = face.get_char_index(right_char as usize)
-                    && let Ok(kerning) = face.get_kerning(
-                        left_index,
-                        right_index,
-                        freetype::face::KerningMode::KerningDefault,
-                    )
-                {
-                    let kern_x = convert_metric(kerning.x);
-                    if kern_x != 0 {
-                        let right_label = Label::Unicode(vec![right_char]);
+                if let Some(left_index) = face.get_char_index(left_char as usize) {
+                    if let Some(right_index) = face.get_char_index(right_char as usize) {
+                        if let Ok(kerning) = face.get_kerning(
+                            left_index,
+                            right_index,
+                            freetype::face::KerningMode::KerningDefault,
+                        ) {
+                            let kern_x = convert_metric(kerning.x);
+                            if kern_x != 0 {
+                                let right_label = Label::Unicode(vec![right_char]);
 
-                        kerning_map
-                            .entry(left_char)
-                            .or_default()
-                            .insert(right_label, kern_x as f32);
+                                kerning_map
+                                    .entry(left_char)
+                                    .or_default()
+                                    .insert(right_label, kern_x as f32);
+                            }
+                        }
                     }
                 }
             }
@@ -229,11 +230,12 @@ pub fn convert_font_to_yaff(
 
         // Apply kerning data to glyphs
         for glyph in &mut font.glyphs {
-            if let Some(Label::Unicode(codes)) = glyph.labels.first()
-                && let Some(&char_code) = codes.first()
-                && let Some(kern_pairs) = kerning_map.get(&char_code)
-            {
-                glyph.right_kerning = Some(kern_pairs.clone());
+            if let Some(Label::Unicode(codes)) = glyph.labels.first() {
+                if let Some(&char_code) = codes.first() {
+                    if let Some(kern_pairs) = kerning_map.get(&char_code) {
+                        glyph.right_kerning = Some(kern_pairs.clone());
+                    }
+                }
             }
         }
     }

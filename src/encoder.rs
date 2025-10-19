@@ -311,22 +311,22 @@ pub fn to_yaff_string(font: &YaffFont) -> String {
                 has_any_per_glyph_prop = true;
             }
 
-            if let Some(map) = &glyph.right_kerning
-                && !map.is_empty()
-            {
-                let formatted_map = format_kerning_map_to_string(map);
-                if !formatted_map.is_empty() {
-                    writeln!(per_glyph_props_s, "right-kerning:\n{formatted_map}").unwrap();
-                    has_any_per_glyph_prop = true;
+            if let Some(map) = &glyph.right_kerning {
+                if !map.is_empty() {
+                    let formatted_map = format_kerning_map_to_string(map);
+                    if !formatted_map.is_empty() {
+                        writeln!(per_glyph_props_s, "right-kerning:\n{formatted_map}").unwrap();
+                        has_any_per_glyph_prop = true;
+                    }
                 }
             }
-            if let Some(map) = &glyph.left_kerning
-                && !map.is_empty()
-            {
-                let formatted_map = format_kerning_map_to_string(map);
-                if !formatted_map.is_empty() {
-                    writeln!(per_glyph_props_s, "left-kerning:\n{formatted_map}").unwrap();
-                    has_any_per_glyph_prop = true;
+            if let Some(map) = &glyph.left_kerning {
+                if !map.is_empty() {
+                    let formatted_map = format_kerning_map_to_string(map);
+                    if !formatted_map.is_empty() {
+                        writeln!(per_glyph_props_s, "left-kerning:\n{formatted_map}").unwrap();
+                        has_any_per_glyph_prop = true;
+                    }
                 }
             }
 
