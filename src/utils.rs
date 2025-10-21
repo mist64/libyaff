@@ -152,7 +152,7 @@ pub fn convert_codepoint_to_unicode_labels(font: &mut YaffFont) {
             }
         }
         Some(_) => {
-            println!("Warning: Unsupported encoding. Only ASCII is processed.");
+            log::warn!("Unsupported encoding. Only ASCII is processed.");
         }
     }
 }

@@ -218,8 +218,8 @@ fn handle_deprecated_unquoted_tag(
     );
 
     if should_treat_as_tag {
-        println!(
-            "Warning: Deprecated unquoted tag format detected: '{single_element}'. "
+        log::warn!(
+            "Deprecated unquoted tag format detected: '{single_element}'"
         );
         Some(Label::Tag(single_element.to_string()))
     } else {
@@ -637,8 +637,8 @@ fn set_global_property(
         "shift-up" => font.global_shift_up = Some(parse_int_val(&value_str, line_num, &key)?),
 
         "line-width" => {
-            eprintln!(
-                "Warning: Unsupported vertical metric property '{key}' on line {line_num}. This property is ignored."
+            log::warn!(
+                "Unsupported vertical metric property '{key}' on line {line_num}. This property is ignored."
             );
         }
         "left-extent" | "right-extent" => {
@@ -656,7 +656,7 @@ fn set_global_property(
             });
         }
         _ => {
-            println!("Warning: Unknown global property: {key}");
+            log::warn!("Unknown global property: {key}");
         }
     }
     Ok(())
@@ -716,8 +716,8 @@ fn set_glyph_property(
             });
         }
         _ => {
-            println!(
-                "Warning: Line {line_num}: Unknown per-glyph property '{key}' with value '{value}', discarding."
+            log::warn!(
+                "Line {line_num}: Unknown per-glyph property '{key}' with value '{value}', discarding."
             );
         }
     }
@@ -1149,7 +1149,7 @@ impl<'a> Decoder<'a> {
             let line_data = if line_data.len() < expected_width {
                 // We are okay with shorter lines, we pad with '.'
                 let line_num = error_line_num - lines_data.len() + i;
-                println!(
+                log::warn!(
                     "Line {line_num}: Bitmap line is shorter than expected width."
                 );
                 let mut line_data = line_data.to_string();
