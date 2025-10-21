@@ -427,12 +427,12 @@ fn parse_kerning_map_val(
         let mut parts_iter = trimmed_line.rsplitn(2, char::is_whitespace);
         let val_str = parts_iter.next();
         let label_str = parts_iter.next();
-        if let (Some(label_s), Some(val_s)) = (label_str, val_str)
-            && let Some(label) = parse_key_as_label(label_s, &LineType::default())
-        {
-            let val = parse_float_val(val_s, current_line_num, key_for_error)?;
-            map.insert(label, val);
-            continue;
+        if let (Some(label_s), Some(val_s)) = (label_str, val_str) {
+            if let Some(label) = parse_key_as_label(label_s, &LineType::default()) {
+                let val = parse_float_val(val_s, current_line_num, key_for_error)?;
+                map.insert(label, val);
+                continue;
+            }
         }
         return Err(ParseError::InvalidPropertyValue {
             line: current_line_num,
