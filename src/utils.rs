@@ -151,8 +151,32 @@ pub fn convert_codepoint_to_unicode_labels(font: &mut YaffFont) {
                 }
             }
         }
+        // ISO 10646-1 is Unicode; codepoints map directly to unicode values
+        Some("iso10646-1") => {
+            for glyph in &mut font.glyphs {
+                if glyph.labels.iter().any(|l| matches!(l, Label::Unicode(_))) {
+                    continue;
+                }
+                if let Some(Label::Codepoint(codepoints)) = glyph
+                    .labels
+                    .iter()
+                    .find(|l| matches!(l, Label::Codepoint(_)))
+                {
+                    let unicode_labels: Vec<Label> = codepoints
+                        .iter()
+                        .map(|&cp| Label::Unicode(vec![cp as u32]))
+                        .collect();
+                    glyph.labels.extend(unicode_labels);
+                }
+            }
+        }
         Some(_) => {
-            log::warn!("Unsupported encoding. Only ASCII is processed.");
+            let has_glyphs_without_unicode = font.glyphs.iter().any(|g| {
+                !g.labels.iter().any(|l| matches!(l, Label::Unicode(_)))
+            });
+            if has_glyphs_without_unicode {
+                log::warn!("Unsupported encoding; some glyphs have no Unicode labels and cannot be mapped.");
+            }
         }
     }
 }
