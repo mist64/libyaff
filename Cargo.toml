@@ -9,7 +9,7 @@ edition = "2024"
 
 [package]
 name = "libyaff"
-version = "0.1.1"
+version = "0.1.2"
 edition.workspace = true
 description = "Yet Another Font Format (YAFF) - A compact bitmap font format with kerning support"
 license = "MIT OR Apache-2.0"
